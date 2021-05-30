@@ -56,11 +56,7 @@ namespace WebApp
             app.UseHttpsRedirection();
             app.UseWebOptimizer();
             app.UseStaticFiles();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
