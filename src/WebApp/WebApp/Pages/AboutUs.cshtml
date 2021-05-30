@@ -1,0 +1,94 @@
+﻿@page
+@model AboutUsModel
+@{
+    ViewData["Title"] = "Über uns";
+}
+
+@section Scripts {
+    <script src="~/scripts/AboutUs/script.js" inline></script>
+}
+
+@Html.Partial("_HeroImage", "mainpic_2.jpg")
+
+<div class="row" style="padding-top: 30px">
+    <div class="col-sm-7">
+        <p>
+            Willkommen in unserem Ferienhaus!<br>
+            <br>
+            Idyllisch, in ruhiger und grüner Lage direkt am
+            Oder-Neiße-Radweg befindet sich unser, Nichtraucher-Ferienhaus, mit 60 m² Wohnfläche für 2-4 Personen.
+            Das individuell und modern eingerichtete Ferienhaus mit sep. Eingang bietet für jeden das passende.
+            Kinder sind bei uns immer willkommen. Haustiere sind nicht erwünscht.<br>
+            <br>
+        </p>
+        <p>
+            <b>Zur Ausstattung gehören:</b><br>
+            <ul class="listex">
+                <li>
+                    Eine komplett eingerichtete Küche mit
+                    E-Herd, Geschirrspüler, Mikrowelle, Wasserkocher,
+                    Kaffeemaschine, Toaster, Eierkocher, Brotmaschine.
+                </li>
+                <li>
+                    Ein gefliestes Bad mit
+                    Fenster, Badewanne, Waschtisch, Waschmaschine,
+                    WC und Fön.
+                </li>
+                <li>
+                    1 Schlafzimmer und 2 Wohnräume (Platz für ein Kinderbett ist vorhanden)
+                </li>
+                <li>
+                    Ein sonniger Wintergarten
+                    in Süd / Ostlage mit Sitzgruppe.
+                    Spiel-, und Liegewiese.
+                </li>
+                <li>
+                    Der PKW-Stellplatz befindet sich am Haus.
+                </li>
+            </ul>
+        </p>
+        <p>
+            <b>Ausflugsziele:</b><br>
+            <br>
+            Von hier aus haben Sie den optimalen Ausgangspunkt zu einer Vielzahl von Freizeitaktivitäten. Gehen Sie auf Entdeckungstour rund um das Herz der Zentrallausitz:<br>
+            <ul class="listex">
+                <li>Görlitz mit seiner attraktiven Altstadt</li>
+                <li>Ausflug in die Königshainer Berge</li>
+                <li>Kulturinsel Einsiedel</li>
+                <li>Fürst Pückler Park in Bad Muskau</li>
+                <li>Kromlauer Park</li>
+                <li>Flugzeugmuseum Rothenburg</li>
+                <li>Erlebnisbad Krauschwitz</li>
+                <li>Schrotholzsiedlung Erlichthof</li>
+                <li>Waldeisenbahn Weißwasser</li>
+                <li>Stausee Quitzdorf</li>
+                <li>Findlingspark Nochten</li>
+                <li>Waldsee Biehain</li>
+                <li>Bärwalder See</li>
+                <li>Paddeln mit Neiße Tours</li>
+                <li>Ausflüge ins nahe gelegene Zittauer Gebirge</li>
+            </ul>
+        </p>
+    </div>
+    <div class="col-sm-5 imagelist">
+        <img src="/img/domain/thumbs/SZ3.JPG" class="modalImage" alt="Schlafzimmer">
+        <img src="/img/domain/thumbs/Kueche2.jpg" class="modalImage" alt="Küche">
+        <img src="/img/domain/thumbs/WZ5.JPG" class="modalImage" alt="Wohnzimmer">
+        <img src="/img/domain/thumbs/WZ6.JPG" class="modalImage" alt="Wohnzimmer">
+        <img src="/img/domain/thumbs/SZ5.JPG" class="modalImage" alt="Schlafzimmer">
+    </div>
+</div>
+
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <img src="" class="imagepreview" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</div>

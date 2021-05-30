@@ -1,0 +1,38 @@
+﻿@page
+@model WebPage.Pages.RouteDescriptionModel
+@{
+    ViewData["Title"] = "Anfahrt";
+}
+
+@Html.Partial("_HeroImage", "mainpic_4.jpg")
+
+<div class="row">
+    <div class="col-12">
+        <p>
+            Sie erreichen uns bequem über die erste Abfahrt "Kodersdorf" der A4 nach dem Tunnel "Königshainer Berge".
+        </p>
+        <p>
+            <table>
+                <tr>
+                    <td>Komplette Anschrift:&nbsp;&nbsp;</td>
+                    <td style="font-weight: bold">
+                        Rothenburger Landstrasse 345<br>
+                        02828 Görlitz<br>
+                        Ober-Neundorf
+                    </td>
+                </tr>
+            </table>
+        </p>
+        <p>
+            Ihre persönliche Route können Sie sich berechnen lassen: <a href="http://maps.google.de/maps?daddr=Rothenburger Landstrasse 345 02828 Görlitz&t=s&z=12" target="_blank">Zum Routenplaner...</a>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;">
+            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.de/maps?f=q&amp;source=s_q&amp;hl=de&amp;geocode=&amp;q=Rothenburger+Landstra%C3%9Fe+345,+G%C3%B6rlitz&amp;aq=&amp;sll=51.201775,15.002861&amp;sspn=0.043884,0.111494&amp;ie=UTF8&amp;hq=&amp;hnear=Rothenburger+Landstra%C3%9Fe+345,+Ober+Neundorf+02828+G%C3%B6rlitz,+Sachsen&amp;z=11&amp;iwloc=A&amp;ll=51.22272,15.0034&amp;output=embed"></iframe>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,78 @@
+﻿@page
+@model ContactModel
+@{
+    ViewData["Title"] = "Kontakt";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(".onlyWithJs").show();
+    </script>
+    <script src="~/scripts/Contact/script.js" inline></script>
+}
+
+@Html.Partial("_HeroImage", "mainpic_5.jpg")
+
+<div class="row">
+    <div class="col-12">
+        Sie können uns wie folgt kontaktieren:
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12" style="padding-top: 20px; padding-bottom: 20px;">
+        <ul>
+            <li>E-Mail an: <b><a href="mailto:info@goerlitzer-ferienhaus.de">info@goerlitzer-ferienhaus.de</a></b></li>
+            <li>Telefonisch: <b>035820 / 60373</b></li>
+            <li class="onlyWithJs">Das folgende Kontaktformular</li>
+        </ul>
+    </div>
+</div>
+
+<div style="min-height: 450px" class="onlyWithJs">
+    <div class="row" id="input">
+        <div class="col-12">
+            <form id="contactForm" method="post">
+                <div class="form-group">
+                    <label for="formMail">Ihre E-Mail Adresse:</label>
+                    <input type="email" id="formMail" class="form-control" placeholder="E-Mail" />
+                    <div class="form-control-feedback">Sie müssen eine gültige E-Mail Adresse angeben.</div>
+                </div>
+                <div class="form-group">
+                    <label for="formContent">Ihre Anliegen:</label>
+                    <textarea class="form-control" style="height: 200px" id="formContent"></textarea>
+                    <p class="form-control-feedback">Sie müssen ihr Anliegen angeben.</p>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="checkApproval" value="1">
+                    <label class="form-check-label" for="checkApproval">Ich erklähre mich damit einverstanden, daß meine Daten ausschließlich zur Bearbeitung meines Anliegens gespeichert und verwendet werden. (<a href="">Datenschutzerklährung</a>)</label>
+                    <p class="form-control-feedback">Sie müssen der Datenschutzerklährung zustimmen.</p>
+                </div>
+                <div style="padding-top: 1em">
+                    <button id="messageSubmit" type="submit" class="btn btn-primary float-right">Absenden</button>
+                    <button id="messageSubmitSending" disabled="disabled" style="display: none" class="btn btn-primary float-right">Wird gesendet...</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" style="display: none" id="sendComplete">
+        <div class="col-12">
+            <div class="mailSendConfirm">
+                Die Nachricht wurde erfolgreich versendet. Wir werden uns zeitnah mit ihnen unter der angegeben E-Mail Adresse in Verbindung setzen.
+            </div>
+            <br />
+            <button id="confirmSuccess" class="btn btn-primary float-right">Ok</button>
+        </div>
+    </div>
+
+    <div class="row" style="display: none" id="sendError">
+        <div class="col-12">
+            <div class="mailSendConfirm">
+                Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es zu einem späterem Zeitpunkt erneut, oder rufen Sie uns unter der angegeben Telefonnummer an.
+            </div>
+            <br />
+            <button id="confirmError" class="btn btn-primary float-right">Ok</button>
+        </div>
+    </div>
+</div>

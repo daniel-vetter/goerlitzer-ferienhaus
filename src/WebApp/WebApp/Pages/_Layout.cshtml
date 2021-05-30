@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment WebHostEnvironment;
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#9DCF58" />
+    <title>@(ViewBag.Title != null ? ViewBag.Title + " - " : "")Görlitzer Ferienhaus</title>
+    <link rel="stylesheet" href="/vendor/bundle.css" />
+    <link rel="stylesheet" href="/css/site.css" inline />
+</head>
+
+<body>
+
+    <environment exclude="Production">
+        <div style="position: absolute; background: gray; color: white; padding: 0.5em; z-index: 999999; right: 0px">
+            @WebHostEnvironment.EnvironmentName Environment
+        </div>
+    </environment>
+
+    <div class="container outer">
+
+        <nav class="navbar navbar-expand-sm navbar-light menu">
+            <div class="navbar-brand title d-none d-sm-block">
+                Görlitzer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ferienhaus
+            </div>
+            <div class="navbar-brand title d-block d-sm-none">
+                Görlitzer Ferienhaus
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a asp-page="./Index">Startseite</a></li>
+                    <li class="nav-item"><a asp-page="./AboutUs">Über uns</a></li>
+                    <li class="nav-item"><a asp-page="./RouteDescription">Anfahrt</a></li>
+                    <li class="nav-item"><a asp-page="./Contact">Kontakt</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            <div class="content">
+                <main>
+                    @RenderBody()
+                </main>
+            </div>
+            <div class="row footer">
+                <div class="col-md-4 hidden-sm-down title">
+                    Görlitzer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ferienhaus
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    Görlitzer Ferienhaus<br />
+                    Inhaber: Hans Jürgen Vetter<br />
+                    <br />
+                    Rothenburger Landstrasse 345<br />
+                    02828 Görlitz<br />
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    Telefon: 035820 - 60373<br />
+                    <br />
+                    Web: www.goerlitzer-ferienhaus.de<br />
+                    E-Mail: info@goerlitzer-ferienhaus.de<br />
+                    <a asp-page="./Datenschutzerklährung">Datenschutzerklährung</a>
+                </div>
+            </div>
+        </div>
+        <script src="/vendor/bundle.js"></script>
+        @RenderSection("Scripts", required: false)
+        
+        <script type="text/javascript">
+            $(function() {
+                window.cookieconsent.initialise({
+                    content: {
+                        header: "Cookies",
+                        message: "Wir verwenden Cookies, um unsere Webseite für Sie möglichst benutzerfreundlich zu gestalten. Wenn Sie fortfahren, nehmen wir an, dass Sie mit der Verwendung von Cookies einverstanden sind. Weitere Informationen:",
+                        dismiss: "Zustimmen",
+                        link: "Datenschutzerklärung/Cookie-Richtlinie",
+                        href: "/Datenschutzerklährung"
+                    },
+                    palette: {
+                        popup: {
+                            background: "#000"
+                        },
+                        button: {
+                            background: "#82a145",
+                            text: "#FFFFFF"
+                        }
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

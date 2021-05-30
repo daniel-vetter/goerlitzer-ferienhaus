@@ -1,0 +1,15 @@
+﻿@page
+@model WebPage.Pages.NotFoundModel
+@{
+    ViewData["Title"] = "NotFound";
+}
+
+@Html.Partial("_HeroImage", "mainpic_1.jpg")
+
+<p style="padding-top: 5em; padding-bottom: 5em; text-align: center">
+    Die angeforderte Url wurde nicht gefunden.<br />
+    <br/>
+    <a asp-page="./Index">Zurück zur Startseite</a>
+</p>
+
+
