@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: publish_to_dockerhub
     steps:
-      - name: executing remote ssh commands using password
+      - name: Replacing container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOSTNAME }}
@@ -72,4 +72,6 @@ jobs:
             docker container prune -f
             docker run -d --name goerlitzer-ferienhaus-prod -p 80:80 -p 433:433 dvetter/goerlitzer-ferienhaus
             docker image prune -f
+            sleep 5
+            curl localhost/status -sSf --retry 5
             
