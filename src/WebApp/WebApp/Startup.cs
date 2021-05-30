@@ -38,6 +38,7 @@ namespace WebApp
                     "vendor/cookieconsent/cookieconsent.min.js");
             });
             services.AddSingleton<IMailSender, MailSender>();
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +61,7 @@ namespace WebApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHealthChecks("/status");
             });
         }
     }
