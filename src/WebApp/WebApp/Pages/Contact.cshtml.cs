@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
@@ -30,10 +31,17 @@ namespace WebPage.Pages
             var mailToSend = new MailToSend();
             mailToSend.From = _appOptions.Value.ContactForm.From;
             mailToSend.Subject = $"Eine Nachricht wurde über das Kontaktformular auf www.goerlitzer-ferienhaus.de verschickt. (Absender: {inModel.Mail})";
-            mailToSend.Content = "Die folgende Nachricht wurde über das Kontaktformular auf www.goerlitzer-ferienhaus.de abgesendet.\r\n";
-            mailToSend.Content += "Der Datenschutzvereinbarung wurde zugestimmt.\r\n";
-            mailToSend.Content += "----------------------------------------------------------------------------\r\n";
-            mailToSend.Content += inModel.Content;
+
+            mailToSend.ContentText = "Die folgende Nachricht wurde über das Kontaktformular auf www.goerlitzer-ferienhaus.de abgesendet.\r\n";
+            mailToSend.ContentText += "Der Datenschutzvereinbarung wurde zugestimmt.\r\n";
+            mailToSend.ContentText += "----------------------------------------------------------------------------\r\n";
+            mailToSend.ContentText += inModel.Content;
+
+            mailToSend.ContentHtml = "Die folgende Nachricht wurde über das Kontaktformular auf www.goerlitzer-ferienhaus.de abgesendet.<br>";
+            mailToSend.ContentHtml += "Der Datenschutzvereinbarung wurde zugestimmt.<br>";
+            mailToSend.ContentHtml += "<hr>";
+            mailToSend.ContentHtml += HttpUtility.HtmlEncode(inModel.Content);
+
             mailToSend.To = _appOptions.Value.ContactForm.To;
             _mailSender.Send(mailToSend);
 

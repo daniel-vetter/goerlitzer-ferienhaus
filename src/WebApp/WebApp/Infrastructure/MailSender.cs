@@ -39,7 +39,12 @@ namespace WebApp.Infrastructure
                 msg.Subject = mailToSend.Subject;
                 if (!_webHostEnvironment.IsProduction())
                     msg.Subject += $" (Enviroment: {_webHostEnvironment.EnvironmentName})";
-                msg.Body = new TextPart("plain", mailToSend.Content);
+
+                var b = new BodyBuilder();
+                b.HtmlBody = mailToSend.ContentHtml;
+                b.TextBody = mailToSend.ContentText;
+                msg.Body = b.ToMessageBody();
+
                 using (var client = new SmtpClient())
                 {
                     await client.ConnectAsync(_appOptions.Value.Smtp.Host, _appOptions.Value.Smtp.Port, _appOptions.Value.Smtp.Ssl);
@@ -58,7 +63,8 @@ namespace WebApp.Infrastructure
     public class MailToSend
     {
         public string Subject { get; set; }
-        public string Content { get; set; }
+        public string ContentText { get; set; }
+        public string ContentHtml { get; set; }
         public string From { get; set; }
         public string[] To { get; set; }
     }
