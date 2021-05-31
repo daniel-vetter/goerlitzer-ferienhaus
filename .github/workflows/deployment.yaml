@@ -70,7 +70,7 @@ jobs:
             docker image pull dvetter/goerlitzer-ferienhaus
             docker container stop goerlitzer-ferienhaus-prod
             docker container prune -f
-            docker run -d --name goerlitzer-ferienhaus-prod --volume /data/goerlitzer-ferienhaus-prod:/data --publish 80:80 --publish 443:443 --env ASPNETCORE_URLS="http://goerlitzer-ferienhaus.de;https://goerlitzer-ferienhaus.de" dvetter/goerlitzer-ferienhaus
+            docker run -d --name goerlitzer-ferienhaus-prod --volume /data/goerlitzer-ferienhaus-prod:/data --publish 80:80 --publish 443:443 --env ASPNETCORE_URLS="http://goerlitzer-ferienhaus.de;https://goerlitzer-ferienhaus.de" --env Smtp__Password=${{ secrets.SMTP_PASSWORD }} dvetter/goerlitzer-ferienhaus
             docker image prune -f
             sleep 5
             curl localhost/status -sSf --retry 5
