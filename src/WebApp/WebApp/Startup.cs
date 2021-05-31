@@ -1,21 +1,20 @@
-using Certes;
-using FluffySpoon.AspNet.LetsEncrypt;
-using FluffySpoon.AspNet.LetsEncrypt.Certes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using WebApp.Infrastructure;
 
 namespace WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -23,30 +22,15 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddFluffySpoonLetsEncrypt(new LetsEncryptOptions()
-            {
-                Email = "daniel.vetter86@gmail.com",
-                UseStaging = false,
-                Domains = new[] { "goerlitzer-ferienhaus.de" },
-                TimeUntilExpiryBeforeRenewal = TimeSpan.FromDays(30),
-                CertificateSigningRequest = new CsrInfo()
-                {
-                    CountryName = "Germany",
-                    Locality = "Sachsen",
-                    Organization = "privat",
-                    OrganizationUnit = "",
-                    State = "Sachsen"
-                }
-            });
-
-            services.AddFluffySpoonLetsEncryptFileCertificatePersistence();
-            services.AddFluffySpoonLetsEncryptFileChallengePersistence();
+            if (_webHostEnvironment.IsProduction())
+                services.AddLetsEncryptProvider();
 
             services.AddRazorPages().AddRazorPagesOptions(x => 
             {
                 x.Conventions.Add(new KebaberizeUrls());
                 x.Conventions.AddPageRoute("/NotFound", "{*url}");
             });
+
             services.AddWebOptimizer(x =>
             {
                 x.MinifyJsFiles("scripts/**/*.js");
@@ -60,6 +44,7 @@ namespace WebApp
                     "vendor/bootstrap/bootstrap.min.js",
                     "vendor/cookieconsent/cookieconsent.min.js");
             });
+
             services.AddSingleton<IMailSender, MailSender>();
             services.AddHealthChecks();
         }
@@ -77,7 +62,9 @@ namespace WebApp
                 app.UseHsts();
             }
 
-            app.UseFluffySpoonLetsEncrypt();
+            if (env.IsProduction())
+                app.UseLetsEncryptProvider();
+
             app.UseHttpsRedirection();
             app.UseWebOptimizer();
             app.UseStaticFiles();
