@@ -70,7 +70,7 @@ jobs:
             docker image pull dvetter/goerlitzer-ferienhaus
             docker container stop goerlitzer-ferienhaus-prod
             docker container prune -f
-            docker run -d --name goerlitzer-ferienhaus-prod -p 80:80 -p 433:433 dvetter/goerlitzer-ferienhaus
+            docker run -d --name goerlitzer-ferienhaus-prod -p 80:80 -p 443:443 dvetter/goerlitzer-ferienhaus
             docker image prune -f
             sleep 5
             curl localhost/status -sSf --retry 5
