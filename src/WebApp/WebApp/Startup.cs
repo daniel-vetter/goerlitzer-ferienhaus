@@ -26,7 +26,7 @@ namespace WebApp
             services.AddFluffySpoonLetsEncrypt(new LetsEncryptOptions()
             {
                 Email = "daniel.vetter86@gmail.com",
-                UseStaging = true,
+                UseStaging = false,
                 Domains = new[] { "goerlitzer-ferienhaus.de" },
                 TimeUntilExpiryBeforeRenewal = TimeSpan.FromDays(30),
                 CertificateSigningRequest = new CsrInfo()
@@ -77,9 +77,9 @@ namespace WebApp
                 app.UseHsts();
             }
 
+            app.UseFluffySpoonLetsEncrypt();
             app.UseHttpsRedirection();
             app.UseWebOptimizer();
-            app.UseFluffySpoonLetsEncrypt();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
