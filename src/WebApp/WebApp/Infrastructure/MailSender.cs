@@ -1,5 +1,4 @@
 ﻿using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,7 +38,13 @@ namespace WebApp.Infrastructure
                 msg.Subject = mailToSend.Subject;
                 if (!_webHostEnvironment.IsProduction())
                     msg.Subject += $" (Enviroment: {_webHostEnvironment.EnvironmentName})";
-
+                if (mailToSend.ReplyTo != null)
+                {
+                    if (MailboxAddress.TryParse(mailToSend.ReplyTo, out var address))
+                        msg.ReplyTo.Add(address);
+                    else
+                        _logger.LogWarning($"Could not parse mail address '{mailToSend.ReplyTo}'. It will not be set as ReplyTo address.");
+                }
                 var b = new BodyBuilder();
                 b.HtmlBody = mailToSend.ContentHtml;
                 b.TextBody = mailToSend.ContentText;
@@ -67,5 +72,6 @@ namespace WebApp.Infrastructure
         public string ContentHtml { get; set; }
         public string From { get; set; }
         public string[] To { get; set; }
+        public string ReplyTo { get; set; }
     }
 }

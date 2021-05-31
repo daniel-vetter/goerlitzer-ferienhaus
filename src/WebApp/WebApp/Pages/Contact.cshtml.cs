@@ -43,6 +43,8 @@ namespace WebPage.Pages
             mailToSend.ContentHtml += HttpUtility.HtmlEncode(inModel.Content);
 
             mailToSend.To = _appOptions.Value.ContactForm.To;
+            mailToSend.ReplyTo = inModel.Mail;
+
             _mailSender.Send(mailToSend);
 
             return new JsonResult(new
