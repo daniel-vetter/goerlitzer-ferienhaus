@@ -1,8 +1,12 @@
+using Certes;
+using FluffySpoon.AspNet.LetsEncrypt;
+using FluffySpoon.AspNet.LetsEncrypt.Certes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using WebApp.Infrastructure;
 
 namespace WebApp
@@ -19,6 +23,25 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFluffySpoonLetsEncrypt(new LetsEncryptOptions()
+            {
+                Email = "daniel.vetter86@gmail.com",
+                UseStaging = true,
+                Domains = new[] { "goerlitzer-ferienhaus.de" },
+                TimeUntilExpiryBeforeRenewal = TimeSpan.FromDays(30),
+                CertificateSigningRequest = new CsrInfo()
+                {
+                    CountryName = "Germany",
+                    Locality = "Sachsen",
+                    Organization = "privat",
+                    OrganizationUnit = "",
+                    State = "Sachsen"
+                }
+            });
+
+            services.AddFluffySpoonLetsEncryptFileCertificatePersistence();
+            services.AddFluffySpoonLetsEncryptFileChallengePersistence();
+
             services.AddRazorPages().AddRazorPagesOptions(x => 
             {
                 x.Conventions.Add(new KebaberizeUrls());
@@ -56,6 +79,7 @@ namespace WebApp
 
             app.UseHttpsRedirection();
             app.UseWebOptimizer();
+            app.UseFluffySpoonLetsEncrypt();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
