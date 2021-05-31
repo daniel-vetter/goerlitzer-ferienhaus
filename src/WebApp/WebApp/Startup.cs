@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using WebApp.Infrastructure;
@@ -51,6 +53,17 @@ namespace WebApp
                     "vendor/cookieconsent/cookieconsent.min.js");
             });
 
+            if (_webHostEnvironment.IsProduction())
+            {
+                services.AddLogging(b =>
+                {
+                    b.AddFile("/data/Logs/{0:yyyy}-{0:MM}-{0:dd}.log", options => {
+                        options.MaxRollingFiles = 30;
+                        options.FormatLogFileName = name => string.Format(name, DateTime.UtcNow);
+                    });
+                });
+            }
+            
             services.AddSingleton<IMailSender, MailSender>();
             services.AddHealthChecks();
         }

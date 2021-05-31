@@ -9,6 +9,7 @@
     <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.311" />
     <PackageReference Include="MailKit" Version="2.12.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="5.0.6" />
+    <PackageReference Include="NReco.Logging.File" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
