@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using System.Runtime.InteropServices;
 using WebApp.Infrastructure;
 
 namespace WebApp
@@ -24,6 +27,9 @@ namespace WebApp
         {
             if (_webHostEnvironment.IsProduction())
                 services.AddLetsEncryptProvider();
+
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/data/DataProtectionKeys"));
 
             services.AddRazorPages().AddRazorPagesOptions(x => 
             {

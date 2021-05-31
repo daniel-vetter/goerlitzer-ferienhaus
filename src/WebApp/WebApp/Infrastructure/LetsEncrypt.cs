@@ -30,8 +30,8 @@ namespace WebApp.Infrastructure
             });
 
             var basePath = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? "C:\\data\\letsEncrypt"
-                : "/data/letsEncrypt";
+                ? "C:\\data\\LetsEncrypt"
+                : "/data/LetsEncrypt";
 
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
