@@ -66,6 +66,7 @@ jobs:
           host: ${{ secrets.SERVER_HOSTNAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          port: 5000
           script: |
             docker image pull dvetter/goerlitzer-ferienhaus
             docker container stop goerlitzer-ferienhaus-prod
