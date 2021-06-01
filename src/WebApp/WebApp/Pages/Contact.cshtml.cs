@@ -30,7 +30,7 @@ namespace WebPage.Pages
             
             var mailToSend = new MailToSend();
             mailToSend.From = _appOptions.Value.ContactForm.From;
-            mailToSend.Subject = $"Eine Nachricht wurde über das Kontaktformular auf www.goerlitzer-ferienhaus.de verschickt. (Absender: {inModel.Mail})";
+            mailToSend.Subject = $"Buchungsanfrage Görlitzer Ferienhaus von {inModel.Mail}";
 
             mailToSend.ContentText = "Die folgende Nachricht wurde über das Kontaktformular auf www.goerlitzer-ferienhaus.de abgesendet.\r\n";
             mailToSend.ContentText += "Der Datenschutzvereinbarung wurde zugestimmt.\r\n";
