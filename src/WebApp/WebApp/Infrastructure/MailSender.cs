@@ -1,10 +1,12 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebApp.Infrastructure
@@ -14,7 +16,7 @@ namespace WebApp.Infrastructure
         Task Send(MailToSend mailToSend);
     }
 
-    public class MailSender : IMailSender
+    public class MailSender : IMailSender, IHealthCheck
     {
         private readonly IOptions<AppOptions> _appOptions;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -25,6 +27,23 @@ namespace WebApp.Infrastructure
             _appOptions = appOptions;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
+        }
+
+        public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using (var client = await CreatSmptClient())
+                {
+                    await client.NoOpAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                return HealthCheckResult.Unhealthy("MailSender could not connect to the smtp service.", e);
+            }
+            
+            return HealthCheckResult.Healthy();
         }
 
         public async Task Send(MailToSend mailToSend)
@@ -50,11 +69,9 @@ namespace WebApp.Infrastructure
                 b.TextBody = mailToSend.ContentText;
                 msg.Body = b.ToMessageBody();
 
-                using (var client = new SmtpClient())
+                using (var client = await CreatSmptClient())
                 {
-                    await client.ConnectAsync(_appOptions.Value.Smtp.Host, _appOptions.Value.Smtp.Port, _appOptions.Value.Smtp.Ssl);
-                    if (!string.IsNullOrWhiteSpace(_appOptions.Value.Smtp.Username) || !string.IsNullOrWhiteSpace(_appOptions.Value.Smtp.Password))
-                        await client.AuthenticateAsync(_appOptions.Value.Smtp.Username, _appOptions.Value.Smtp.Password);
+                    
                     await client.SendAsync(msg);
                 }
             }
@@ -63,6 +80,15 @@ namespace WebApp.Infrastructure
                 _logger.LogError(e, "Failed to send mail from contact form.");
                 throw;
             }
+        }
+
+        private async Task<SmtpClient> CreatSmptClient()
+        {
+            var client = new SmtpClient();
+            await client.ConnectAsync(_appOptions.Value.Smtp.Host, _appOptions.Value.Smtp.Port, _appOptions.Value.Smtp.Ssl);
+            if (!string.IsNullOrWhiteSpace(_appOptions.Value.Smtp.Username) || !string.IsNullOrWhiteSpace(_appOptions.Value.Smtp.Password))
+                await client.AuthenticateAsync(_appOptions.Value.Smtp.Username, _appOptions.Value.Smtp.Password);
+            return client;
         }
     }
 

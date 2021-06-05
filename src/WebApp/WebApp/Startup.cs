@@ -60,7 +60,7 @@ namespace WebApp
             });
             
             services.AddSingleton<IMailSender, MailSender>();
-            services.AddHealthChecks();
+            services.AddHealthChecks().AddCheck<MailSender>("MailSender");
             services.Configure<AppOptions>(Configuration);
         }
 
