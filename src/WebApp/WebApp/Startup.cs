@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using WebApp.Infrastructure;
+using WebApp.Infrastructure.SqliteLogger;
 
 namespace WebApp
 {
@@ -53,16 +54,10 @@ namespace WebApp
                     "vendor/cookieconsent/cookieconsent.min.js");
             });
 
-            if (_webHostEnvironment.IsProduction())
+            services.AddLogging(b =>
             {
-                services.AddLogging(b =>
-                {
-                    b.AddFile("/data/Logs/{0:yyyy}-{0:MM}-{0:dd}.log", options => {
-                        options.MaxRollingFiles = 30;
-                        options.FormatLogFileName = name => string.Format(name, DateTime.UtcNow);
-                    });
-                });
-            }
+                b.AddSqlite(Configuration.GetSection("Logging"));
+            });
             
             services.AddSingleton<IMailSender, MailSender>();
             services.AddHealthChecks();

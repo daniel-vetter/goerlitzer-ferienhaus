@@ -53,7 +53,8 @@ namespace WebApp.Infrastructure
                 using (var client = new SmtpClient())
                 {
                     await client.ConnectAsync(_appOptions.Value.Smtp.Host, _appOptions.Value.Smtp.Port, _appOptions.Value.Smtp.Ssl);
-                    await client.AuthenticateAsync(_appOptions.Value.Smtp.Username, _appOptions.Value.Smtp.Password);
+                    if (!string.IsNullOrWhiteSpace(_appOptions.Value.Smtp.Username) || !string.IsNullOrWhiteSpace(_appOptions.Value.Smtp.Password))
+                        await client.AuthenticateAsync(_appOptions.Value.Smtp.Username, _appOptions.Value.Smtp.Password);
                     await client.SendAsync(msg);
                 }
             }
