@@ -27,9 +27,6 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (_webHostEnvironment.IsProduction())
-                services.AddLetsEncryptProvider();
-
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/data/DataProtectionKeys"));
 
@@ -77,9 +74,6 @@ namespace WebApp
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
-            if (env.IsProduction())
-                app.UseLetsEncryptProvider();
 
             app.UseHttpsRedirection();
             app.UseWebOptimizer();
