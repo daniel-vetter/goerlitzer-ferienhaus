@@ -1,6 +1,6 @@
 ﻿using Certes;
-using FluffySpoon.AspNet.LetsEncrypt;
-using FluffySpoon.AspNet.LetsEncrypt.Certes;
+using FluffySpoon.AspNet.EncryptWeMust;
+using FluffySpoon.AspNet.EncryptWeMust.Certes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
