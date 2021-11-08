@@ -1,20 +1,66 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.DataProtection;
+using System.Runtime.InteropServices;
+using WebApp;
+using WebApp.Infrastructure;
+using WebApp.Infrastructure.SqliteLogger;
+using WebApp.Infrastructure.SqliteRequestTracer;
 
-namespace WebApp
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRazorPages().AddRazorPagesOptions(x =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    x.Conventions.Add(new KebaberizeUrls());
+    x.Conventions.AddPageRoute("/NotFound", "{*url}");
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+    builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/data/DataProtectionKeys"));
+
+builder.Services.AddWebOptimizer(x =>
+ {
+     x.MinifyJsFiles("scripts/**/*.js");
+     x.MinifyCssFiles("css/**/*.css");
+     x.AddCssBundle("/vendor/bundle.css",
+         "vendor/bootstrap/bootstrap.min.css",
+         "vendor/cookieconsent/cookieconsent.min.css");
+     x.AddJavaScriptBundle("/vendor/bundle.js",
+         "vendor/jquery/jquery.min.js",
+         "vendor/popper/popper.min.js",
+         "vendor/bootstrap/bootstrap.min.js",
+         "vendor/cookieconsent/cookieconsent.min.js");
+ });
+
+builder.Services.AddLogging(b =>
+{
+    b.AddSqlite(builder.Configuration.GetSection("Logging"));
+});
+
+builder.Services.AddSingleton<IMailSender, MailSender>();
+builder.Services.AddHealthChecks().AddCheck<MailSender>("MailSender");
+builder.Services.Configure<AppOptions>(builder.Configuration);
+builder.Services.AddRequestTrace(builder.Configuration.GetSection("RequestTrace"));
+
+var app = builder.Build();
+
+app.UseRequestTrace();
+if (app.Services.GetRequiredService<IWebHostEnvironment>().IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseWebOptimizer();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapHealthChecks("/status");
+});
+
+app.Run();
