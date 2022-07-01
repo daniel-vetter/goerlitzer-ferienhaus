@@ -30,7 +30,7 @@ jobs:
           path: /tmp/docker-image.tar
 
   publish_to_dockerhub:
-    name: Publishing image
+    name: Publishing image to dockerhub
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -55,10 +55,35 @@ jobs:
           docker load --input /tmp/docker-image.tar
           docker push dvetter/goerlitzer-ferienhaus
 
+  publish_to_github:
+    name: Publishing image to github
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-image
+          path: /tmp
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Github
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Push image
+        run: |
+          OLD_IMAGE_ID=dvetter/goerlitzer-ferienhaus:latest
+          NEW_IMAGE_ID=ghcr.io/${{ github.repository_owner }}/goerlitzer-ferienhaus:${{ github.sha }}
+          docker tag $OLD_IMAGE_ID $NEW_IMAGE_ID
+          docker push $NEW_IMAGE_ID
+
   update_server:
     name: Updating prod environment
     runs-on: ubuntu-latest
-    needs: publish_to_dockerhub
+    needs: [publish_to_dockerhub, publish_to_github]
     steps:
       - name: Replacing container
         uses: appleboy/ssh-action@master
