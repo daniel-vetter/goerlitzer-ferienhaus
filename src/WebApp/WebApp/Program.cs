@@ -57,10 +57,7 @@ app.UseHttpsRedirection();
 app.UseWebOptimizer();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRazorPages();
-    endpoints.MapHealthChecks("/status");
-});
+app.MapRazorPages();
+app.MapHealthChecks("/status");
 
 app.Run();

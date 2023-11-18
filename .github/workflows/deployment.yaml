@@ -97,8 +97,8 @@ jobs:
             docker image pull dvetter/goerlitzer-ferienhaus
             docker container stop goerlitzer-ferienhaus-prod
             docker container prune -f
-            docker run -d --name goerlitzer-ferienhaus-prod --restart unless-stopped --volume /data/goerlitzer-ferienhaus-prod:/data --publish 5020:80 --env Smtp__Password=${{ secrets.SMTP_PASSWORD }} dvetter/goerlitzer-ferienhaus
+            docker run -d --name goerlitzer-ferienhaus-prod --restart unless-stopped --volume /data/goerlitzer-ferienhaus-prod:/data --publish 127.0.0.1:5020:8080 --env Smtp__Password=${{ secrets.SMTP_PASSWORD }} dvetter/goerlitzer-ferienhaus
             docker image prune -f
             sleep 5
-            curl localhost/status -sSf --retry 5
+            curl http://localhost:5020/status -sSf --retry 5
             
